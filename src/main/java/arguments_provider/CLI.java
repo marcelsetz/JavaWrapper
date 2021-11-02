@@ -40,8 +40,10 @@ public class CLI implements OptionsProvider {
         // create Options object
         this.options = new Options();
         Option file = new Option("f", "file", true, "file with new data");
+        Option helpOption = new Option("h", "help", false, "Prints this message");
 
         options.addOption(file);
+        options.addOption(helpOption);
     }
 
     /**
@@ -58,8 +60,8 @@ public class CLI implements OptionsProvider {
                     String fileName = this.commandLine.getOptionValue("file");
                     System.out.println("File is Valid");
                 } else {
-                    throw new IllegalArgumentException("file extension is not legal: \"" + f + "\""
-                            + "must be either csv or arff");
+                    System.out.println("file extension is not legal: \"" + f + "\""
+                            + " must be either csv or arff");
                 }
             } else {
                 System.out.println("Please provide a csv or arff file with all of the needed instances (found in the ReadMe.md");
@@ -72,7 +74,7 @@ public class CLI implements OptionsProvider {
 
     private boolean isLegalFile(String f) {
         String ext = FilenameUtils.getExtension(f);
-        return Objects.equals(ext, ".csv") || Objects.equals(ext, ".arff");
+        return Objects.equals(ext, "csv") || Objects.equals(ext, "arff");
     }
     /**
      * prints help.

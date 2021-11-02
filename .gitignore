@@ -134,6 +134,7 @@ fabric.properties
 hs_err_pid*
 
 ### Gradle ###
+.idea
 .gradle
 build/
 

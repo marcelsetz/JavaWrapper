@@ -19,8 +19,9 @@ public class MessagingController {
      * Starts the application logic.
      */
     public void start() {
+        System.out.println(optionsProvider);
         if (optionsProvider == null) {
-            throw new IllegalStateException("Please provide valid options. For help type -h");
+            throw new IllegalStateException("\nPlease provide valid options. For help type -h\n");
         }
 
         printUserSettings();
@@ -35,7 +36,7 @@ public class MessagingController {
     private void printUserSettings() {
         String fileName = optionsProvider.getFileName();
         String ext = FilenameUtils.getExtension(fileName);
-        System.out.println("The file you're trying to open is... " + optionsProvider.getFileName());
+        System.out.println("The file you're trying to open is... " + fileName + "\n");
 
         if (Objects.equals(ext, ".csv") || Objects.equals(ext, ".arff")) {
             System.out.println(ext + " is a valid file extension for this program!");
