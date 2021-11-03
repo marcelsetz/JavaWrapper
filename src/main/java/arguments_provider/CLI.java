@@ -2,6 +2,7 @@ package arguments_provider;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ public class CLI implements OptionsProvider {
     private Options options;
     private CommandLine commandLine;
     public String fileName;
+    public boolean toCSV;
 
     public CLI(final String[] args) {
         this.clArguments = args;
@@ -40,9 +42,11 @@ public class CLI implements OptionsProvider {
         // create Options object
         this.options = new Options();
         Option file = new Option("f", "file", true, "file with new data");
+        Option outputFormat = new Option("a", "to-arff", false, "The format in which the output will be written (if not given the output will be csv)");
         Option helpOption = new Option("h", "help", false, "Prints this message");
 
         options.addOption(file);
+        options.addOption(outputFormat);
         options.addOption(helpOption);
     }
 
@@ -56,20 +60,22 @@ public class CLI implements OptionsProvider {
 
             if (commandLine.hasOption("file")) {
                 String f = commandLine.getOptionValue("file").trim();
+                this.fileName = f;
                 if (isLegalFile(f)) {
-                    String fileName = this.commandLine.getOptionValue("file");
-                    System.out.println("File is Valid");
+                    System.out.println(StringUtils.repeat("=", 100) + "\nFile is Valid");
                 } else {
-                    System.out.println("file extension is not legal: \"" + f + "\""
-                            + " must be either csv or arff");
+                    fileName = null;
+                    System.out.println(StringUtils.repeat("=", 100) + "\nfile extension is not legal: \"" + f + "\""
+                            + " must be either .csv or .arff");
                 }
-            } else {
-                System.out.println("Please provide a csv or arff file with all of the needed instances (found in the ReadMe.md");
+            } else if (!helpRequested()){
+                System.out.println(StringUtils.repeat("=", 100) + "\nPlease provide a csv or arff file (-f) with all of the needed instances (found in the ReadMe.md)");
             }
-
+            toCSV = !commandLine.hasOption("to-arff");
         } catch (ParseException ex) {
-            throw new IllegalArgumentException(ex);
+            throw new IllegalArgumentException(ex.getMessage());
         }
+
     }
 
     private boolean isLegalFile(String f) {
@@ -81,12 +87,17 @@ public class CLI implements OptionsProvider {
      */
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("MyCoolTool", options);
+        formatter.printHelp("... -f [arff or csv file]", options);
     }
 
     @Override
     public String getFileName() {
         return this.fileName;
+    }
+
+    @Override
+    public boolean getOutputFormat() {
+        return this.toCSV;
     }
 
 

@@ -16,11 +16,14 @@ public final class CommandLineArgsRunner {
     public static void main(final String[] args) {
         try {
             CLI op = new CLI(args);
+            String fileName = op.getFileName();
+            boolean toCSV = op.getOutputFormat();
             if (op.helpRequested()) {
                 op.printHelp();
                 return;
             }
-            MessagingController controller = new MessagingController(op);
+
+            MessagingController controller = new MessagingController(op, fileName, toCSV);
             controller.start();
         } catch (IllegalStateException ex) {
             System.err.println("Something went wrong while processing your command line \""

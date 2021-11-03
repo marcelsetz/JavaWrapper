@@ -1,33 +1,45 @@
 package arguments_provider;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
 public class MessagingController {
     private final OptionsProvider optionsProvider;
+    String fileName;
+    boolean toCSV;
 
     /**
      * the constructor need an OptionsProvider to be able to do its work.
-     * @param optionsPovider the options provider
+     * @param optionsProvider the options provider
      */
-    public MessagingController(final OptionsProvider optionsPovider) {
-        this.optionsProvider = optionsPovider;
+    public MessagingController(final OptionsProvider optionsProvider, String fileName, boolean toCSV) {
+        this.optionsProvider = optionsProvider;
+        this.fileName = fileName;
+        this.toCSV = toCSV;
     }
 
     /**
      * Starts the application logic.
      */
     public void start() {
-        System.out.println(optionsProvider);
-        if (optionsProvider == null) {
-            throw new IllegalStateException("\nPlease provide valid options. For help type -h\n");
+        if (fileName == null) {
+            System.out.println("Program Stopping...\n" + StringUtils.repeat("=", 100));
+            System.exit(0);
         }
 
         printUserSettings();
 
-        //application logic here
+            //application logic here
         System.out.println("Program Running...");
+        if(!toCSV) {
+            System.out.println(StringUtils.repeat("=", 100));
+        }
+
+        WekaRunner weka = new WekaRunner();
+        weka.RunWeka(fileName, toCSV);
+
     }
 
     /**
@@ -38,10 +50,16 @@ public class MessagingController {
         String ext = FilenameUtils.getExtension(fileName);
         System.out.println("The file you're trying to open is... " + fileName + "\n");
 
-        if (Objects.equals(ext, ".csv") || Objects.equals(ext, ".arff")) {
+        if (Objects.equals(ext, "csv") || Objects.equals(ext, "arff")) {
             System.out.println(ext + " is a valid file extension for this program!");
         } else {
             System.out.println(ext + " is not a valid file extension for this program");
+        }
+
+        if (toCSV) {
+            System.out.println("Output Format: csv\n");
+        } else {
+            System.out.println("Output format: arff\n");
         }
     }
 }

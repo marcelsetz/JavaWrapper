@@ -1,5 +1,6 @@
 package arguments_provider;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -9,6 +10,7 @@ import java.util.Scanner;
  */
 public class UserInputOptionsProvider implements OptionsProvider {
     private String fileName;
+    private boolean toCSV;
 
     /**
      * default constructor.
@@ -23,6 +25,7 @@ public class UserInputOptionsProvider implements OptionsProvider {
     private void initialize() {
         Scanner scanner = new Scanner(System.in);
         fetchFileName(scanner);
+        fetchOutputFormat(scanner);
     }
 
     /**
@@ -35,8 +38,22 @@ public class UserInputOptionsProvider implements OptionsProvider {
 
     }
 
+    private void fetchOutputFormat(final Scanner scanner) {
+        System.out.println("Do you want the file to be csv or arff > ");
+        if (!Objects.equals(scanner.next(), "csv") || !Objects.equals(scanner.next(), "arff")) {
+            System.out.println("\nPlease enter either csv or arff.");
+        }
+        this.toCSV = Objects.equals(scanner.next(), "csv");
+
+    }
+
     @Override
     public String getFileName() {
         return fileName;
+    }
+
+    @Override
+    public boolean getOutputFormat() {
+        return toCSV;
     }
 }

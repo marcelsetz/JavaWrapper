@@ -9,7 +9,9 @@ public class UserInputRequesterRunner {
      */
     public static void main(final String[] args) {
         OptionsProvider op = new UserInputOptionsProvider();
-        MessagingController controller = new MessagingController(op);
+        String fileName = op.getFileName();
+        boolean toCSV = op.getOutputFormat();
+        MessagingController controller = new MessagingController(op, fileName, toCSV);
         controller.start();
     }
 }
