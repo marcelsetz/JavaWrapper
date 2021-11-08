@@ -10,6 +10,8 @@ make sure there is no .csv or .arff elsewhere in the name than the last place.
 
 To Do:
 - Report
-- Maybe single option without file
-- finetuning
-- 
+- Readme
+- Jar file
+- Maybe stats
+- Maybe option to stop during program (UserInputRequesterRunner)
+- Output to (new) output directory

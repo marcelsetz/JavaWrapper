@@ -11,7 +11,9 @@ public class UserInputRequesterRunner {
         OptionsProvider op = new UserInputOptionsProvider();
         String fileName = op.getFileName();
         boolean toCSV = op.getOutputFormat();
-        MessagingController controller = new MessagingController(op, fileName, toCSV);
+        boolean isSmokeLabel = op.getClassLabel();
+
+        MessagingController controller = new MessagingController(op, fileName, toCSV, isSmokeLabel);
         controller.start();
     }
 }

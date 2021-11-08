@@ -18,12 +18,13 @@ public final class CommandLineArgsRunner {
             CLI op = new CLI(args);
             String fileName = op.getFileName();
             boolean toCSV = op.getOutputFormat();
+            boolean isSmokeLabel = op.getClassLabel();
             if (op.helpRequested()) {
                 op.printHelp();
                 return;
             }
 
-            MessagingController controller = new MessagingController(op, fileName, toCSV);
+            MessagingController controller = new MessagingController(op, fileName, toCSV, isSmokeLabel);
             controller.start();
         } catch (IllegalStateException ex) {
             System.err.println("Something went wrong while processing your command line \""

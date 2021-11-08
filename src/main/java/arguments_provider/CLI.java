@@ -13,6 +13,7 @@ public class CLI implements OptionsProvider {
     private CommandLine commandLine;
     public String fileName;
     public boolean toCSV;
+    public boolean isSmokeLabel;
 
     public CLI(final String[] args) {
         this.clArguments = args;
@@ -43,10 +44,12 @@ public class CLI implements OptionsProvider {
         this.options = new Options();
         Option file = new Option("f", "file", true, "file with new data");
         Option outputFormat = new Option("a", "to-arff", false, "The format in which the output will be written (if not given the output will be csv)");
+        Option classLabel = new Option("s", "output-smoke", false, "If given the class labels in the output gives the smoking status, otherwise the gender will be given");
         Option helpOption = new Option("h", "help", false, "Prints this message");
 
         options.addOption(file);
         options.addOption(outputFormat);
+        options.addOption(classLabel);
         options.addOption(helpOption);
     }
 
@@ -72,6 +75,7 @@ public class CLI implements OptionsProvider {
                 System.out.println(StringUtils.repeat("=", 100) + "\nPlease provide a csv or arff file (-f) with all of the needed instances (found in the ReadMe.md)");
             }
             toCSV = !commandLine.hasOption("to-arff");
+            isSmokeLabel = commandLine.hasOption("output-smoke");
         } catch (ParseException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
@@ -98,6 +102,11 @@ public class CLI implements OptionsProvider {
     @Override
     public boolean getOutputFormat() {
         return this.toCSV;
+    }
+
+    @Override
+    public boolean getClassLabel() {
+        return isSmokeLabel;
     }
 
 

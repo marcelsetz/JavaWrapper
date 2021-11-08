@@ -1,0 +1,27 @@
+@relation unknown_Gender_Data
+
+@attribute cg00050873 numeric
+@attribute cg00212031 numeric
+@attribute cg00213748 numeric
+@attribute cg00214611 numeric
+@attribute cg00455876 numeric
+@attribute cg01707559 numeric
+@attribute cg02004872 numeric
+@attribute cg02011394 numeric
+@attribute cg02050847 numeric
+@attribute cg02233190 numeric
+@attribute cg02494853 numeric
+@attribute cg02839557 numeric
+@attribute cg02842889 numeric
+@attribute cg03052502 numeric
+@attribute cg03155755 numeric
+@attribute cg03244189 numeric
+@attribute cg03443143 numeric
+@attribute cg03683899 numeric
+@attribute cg03695421 numeric
+@attribute cg03706273 numeric
+@attribute Gender {' f',' m'}
+
+@data
+0.607563,0.422843,0.372455,0.621562,0.290777,0.267143,0.179144,0.480252,0.327608,0.24112,0.06707,0.246993,0.46924,0.400247,0.415031,0.221433,0.475826,0.207724,0.209197,0.129983,' f'
+0.453535,0.345534,0.3455,0.756,0.5677,0.6978,0.987,0.7809,0.70789,0.78099,0.4656,0.76454,0.689678,0.476458,0.699698,0.47657,0.456346,0.35453,0.353543,0.354534,' f'

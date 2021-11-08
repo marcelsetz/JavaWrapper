@@ -9,15 +9,17 @@ public class MessagingController {
     private final OptionsProvider optionsProvider;
     String fileName;
     boolean toCSV;
+    boolean isSmokeLabel;
 
     /**
      * the constructor need an OptionsProvider to be able to do its work.
      * @param optionsProvider the options provider
      */
-    public MessagingController(final OptionsProvider optionsProvider, String fileName, boolean toCSV) {
+    public MessagingController(final OptionsProvider optionsProvider, String fileName, boolean toCSV, boolean isSmokeLabel) {
         this.optionsProvider = optionsProvider;
         this.fileName = fileName;
         this.toCSV = toCSV;
+        this.isSmokeLabel = isSmokeLabel;
     }
 
     /**
@@ -32,13 +34,13 @@ public class MessagingController {
         printUserSettings();
 
             //application logic here
-        System.out.println("Program Running...");
+        System.out.println("Program Running...\n");
         if(!toCSV) {
             System.out.println(StringUtils.repeat("=", 100));
         }
 
         WekaRunner weka = new WekaRunner();
-        weka.RunWeka(fileName, toCSV);
+        weka.RunWeka(fileName, toCSV, isSmokeLabel);
 
     }
 
@@ -60,6 +62,12 @@ public class MessagingController {
             System.out.println("Output Format: csv\n");
         } else {
             System.out.println("Output format: arff\n");
+        }
+
+        if (isSmokeLabel) {
+            System.out.println("Class label: Smoking.Status");
+        } else {
+            System.out.println("Class label: Gender");
         }
     }
 }
