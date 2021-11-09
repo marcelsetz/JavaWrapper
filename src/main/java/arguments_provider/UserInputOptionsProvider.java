@@ -38,7 +38,7 @@ public class UserInputOptionsProvider implements OptionsProvider {
      * @param scanner the scanner
      */
     private void fetchFileName(final Scanner scanner) {
-        System.out.println("Please enter the path to your csv or arff file > ");
+        System.out.println("Please enter the path to your csv or arff file or type stop to exit > ");
         this.fileName = scanner.next();
 
         File newFile = new File(fileName);
@@ -46,13 +46,16 @@ public class UserInputOptionsProvider implements OptionsProvider {
         String ext = FilenameUtils.getExtension(fileName);
         if (Objects.equals(ext, "csv") || Objects.equals(ext, "arff")) {
             System.out.println(ext + " is a valid file extension for this program!");
+        } else if (Objects.equals(fileName, "stop") || Objects.equals(fileName, "Stop")) {
+            System.out.println("Program Stopping...");
+            System.exit(0);
         } else if (Objects.equals(ext, "")) {
             System.out.println("Please enter a valid file format");
             fetchFileName(scanner);
         } else if (!newFile.exists()) {
             System.out.println("The given file does not exist! Please try again.");
             fetchFileName(scanner);
-        } else {
+        } else  {
             System.out.println(ext + " is not a valid file extension for this program");
             fetchFileName(scanner);
         }
@@ -60,12 +63,15 @@ public class UserInputOptionsProvider implements OptionsProvider {
     }
 
     private void fetchOutputFormat(final Scanner scanner) {
-        System.out.println("Do you want the file to be csv or arff > ");
+        System.out.println("Do you want the file to be csv or arff or type stop to exit > ");
         String output = scanner.next();
         if (Objects.equals(output, "csv")) {
             this.toCSV = true;
         } else if (Objects.equals(output, "arff")) {
             this.toCSV = false;
+        } else if (Objects.equals(output, "stop") || Objects.equals(output, "Stop")) {
+            System.out.println("Program Stopping...");
+            System.exit(0);
         } else {
             System.out.println("Please enter either csv or arff");
             fetchOutputFormat(scanner);
@@ -73,12 +79,15 @@ public class UserInputOptionsProvider implements OptionsProvider {
     }
 
     private void fetchClassLabel(final Scanner scanner) {
-        System.out.println("Do you want the smoking data (s) or the gender data (g) as output class > ");
+        System.out.println("Do you want the smoking data (s) or the gender data (g) as output class or type stop to exit > ");
         String classLabel = scanner.next();
         if (Objects.equals(classLabel, "s") || Objects.equals(classLabel, "smoke")) {
             this.isSmokeLabel = true;
         } else if (Objects.equals(classLabel, "g") || Objects.equals(classLabel, "gender")) {
             this.isSmokeLabel = false;
+        } else if (Objects.equals(classLabel, "stop") || Objects.equals(classLabel, "Stop")) {
+            System.out.println("Program Stopping...");
+            System.exit(0);
         } else {
             System.out.println("Please enter either smoke (or s) or gender (or g)");
             fetchClassLabel(scanner);

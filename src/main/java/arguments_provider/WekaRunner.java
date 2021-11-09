@@ -1,59 +1,33 @@
 package arguments_provider;
 
-import org.apache.commons.io.FileDeleteStrategy;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import weka.classifiers.bayes.NaiveBayes;
+
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
-import weka.classifiers.trees.j48.Stats;
-import weka.core.Attribute;
-import weka.core.AttributeStats;
-import weka.core.Instance;
+
 import weka.core.Instances;
-import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
-import weka.core.converters.ConverterUtils;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.classifiers.*;
-import weka.estimators.Estimator;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Remove;
 
 import java.io.*;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.channels.OverlappingFileLockException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
-/**
- * If you saved a model to a file in WEKA, you can use it reading the generated java object.
- * Here is an example with Random Forest classifier (previously saved to a file in WEKA):
- * import java.io.ObjectInputStream;
- * import weka.core.Instance;
- * import weka.core.Instances;
- * import weka.core.Attribute;
- * import weka.core.FastVector;
- * import weka.classifiers.trees.RandomForest;
- * RandomForest rf = (RandomForest) (new ObjectInputStream(PATH_TO_MODEL_FILE)).readObject();
- * <p>
- * or
- * RandomTree treeClassifier = (RandomTree) SerializationHelper.read(new FileInputStream("model.weka")));
- */
 public class WekaRunner {
-    private final String modelFileJ48 = "testdata/J48.model";
-    private final String modelFileRF = "testdata/RandomForest.model";
+
+    /**
+     * Actual weka API program, loads and processes file to classify
+     * the instances in the given file with the test files.
+     * */
+
+    private final String modelFileJ48 = "data/models/J48.model";
+    private final String modelFileRF = "data/models/RandomForest.model";
 
     public void RunWeka(String file, boolean toCSV, boolean isSmokeLabel) {
         WekaRunner runner = new WekaRunner();
@@ -63,9 +37,9 @@ public class WekaRunner {
     private void start(String unknownFile, boolean toCSV, boolean isSmokeLabel) {
         String datafile;
         if (isSmokeLabel) {
-            datafile = "testdata/Smoker_Epigenetic_df_Smoke.arff";
+            datafile = "data/testdata/Smoker_Epigenetic_df_Smoke.arff";
         } else {
-            datafile = "testdata/Smoker_Epigenetic_df_Gender.arff";
+            datafile = "data/testdata/Smoker_Epigenetic_df_Gender.arff";
         }
         Process(datafile, unknownFile, toCSV, isSmokeLabel);
     }
@@ -101,7 +75,6 @@ public class WekaRunner {
                         String line = fileContent.get(i) + ",Smoking.Status";
                         fileContent.set(i, line);
                     } else {
-                        System.out.println("false");
                         String line = fileContent.get(i) + ",?";
                         fileContent.set(i, line);
                     }
@@ -152,23 +125,20 @@ public class WekaRunner {
 
             ArffSaver J48saver = new ArffSaver();
             J48saver.setInstances(labeledJ48);
-            J48saver.setFile(new File("testdata/labeledJ48.arff"));
+            J48saver.setFile(new File("data/output/labeledJ48.arff"));
             J48saver.writeBatch();
 
             ArffSaver RFsaver = new ArffSaver();
             RFsaver.setInstances(labeledRF);
-            RFsaver.setFile(new File("testdata/labeledRF.arff"));
+            RFsaver.setFile(new File("data/output/labeledRF.arff"));
             RFsaver.writeBatch();
-
-            AttributeStats as = labeledJ48.attributeStats(20);
-            System.out.println(as);
 
             if (toCSV) {
                 ARFFToCSV arffConverter = new ARFFToCSV();
-                arffConverter.arffChanger("testdata/labeledJ48.arff");
-                arffConverter.arffChanger("testdata/labeledRF.arff");
+                arffConverter.arffChanger("data/output/labeledJ48.arff");
+                arffConverter.arffChanger("data/output/labeledRF.arff");
 
-                File myObj = new File("testdata/labeledJ48.arff");
+                File myObj = new File("data/output/labeledJ48.arff");
 
                 if (myObj.delete()) {
                     System.out.println("Deleted the folder: " + myObj.getName());
@@ -178,7 +148,7 @@ public class WekaRunner {
                     System.out.println("Failed to delete the folder.");
                 }
 
-                File myObj2 = new File("testdata/labeledRF.arff");
+                File myObj2 = new File("data/output/labeledRF.arff");
                 if (myObj2.delete()) {
                     System.out.println("Deleted the folder: " + myObj2.getName());
                     System.out.println("Created the folder: labeledRF.csv\n" + StringUtils.repeat("=", 100));
@@ -186,11 +156,9 @@ public class WekaRunner {
                 } else {
                     System.out.println("Failed to delete the folder.\n" + StringUtils.repeat("=", 100));
                 }
-
             }
         } catch (Exception e) {
             System.out.println("Failed to save!");
-            ;
         }
     }
 
@@ -221,13 +189,6 @@ public class WekaRunner {
             return null;
         }
 
-    }
-
-    private void savetmp(String arff) throws Exception {
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arff));
-        oos.writeObject(arff);
-        oos.flush();
-        oos.close();
     }
 
     private void saveJ48(J48 j48) throws Exception {

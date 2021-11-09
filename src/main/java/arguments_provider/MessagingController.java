@@ -33,7 +33,6 @@ public class MessagingController {
 
         printUserSettings();
 
-            //application logic here
         System.out.println("Program Running...\n");
         if(!toCSV) {
             System.out.println(StringUtils.repeat("=", 100));

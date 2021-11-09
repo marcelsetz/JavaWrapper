@@ -11,8 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVToARFF {
+
+    /**
+     * Takes a arff file and converts it into a csv file.
+     * And also changes the attribute of chosen class so the program will work correctly.
+     * If input was a csv file, this file will be cleaned after converting so the program can be used again
+     * with the same file and a different class for example.
+     *
+     * @param csvFile csv file to be converted
+     * @param isSmokeLabel true if output class is Smoking.Status
+     * @return arffFile created csv file
+     * */
+
     public String csvChanger(String csvFile, boolean isSmokeLabel) {
-        String arffFile = "testdata/tmp.arff";
+        String arffFile = "data/tmp/tmp.arff";
 
         try {
             CSVLoader csvloader = new CSVLoader();
@@ -25,7 +37,7 @@ public class CSVToARFF {
             arffsaver.writeBatch();
 
         } catch (Exception e) {
-            System.out.println("still csv!");
+            System.out.println("Failed to convert csv to arff!");
         }
 
         try {

@@ -8,6 +8,11 @@ import java.util.Objects;
 
 public class CLI implements OptionsProvider {
 
+    /**
+     * Takes options from command line and processes
+     * them into usable variables for the weka api
+     * */
+
     private final String[] clArguments;
     private Options options;
     private CommandLine commandLine;

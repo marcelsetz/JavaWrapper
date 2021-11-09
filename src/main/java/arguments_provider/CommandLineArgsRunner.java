@@ -7,6 +7,7 @@ public final class CommandLineArgsRunner {
     /**
      * private constructor because this class is not supposed to be instantiated.
      */
+
     private CommandLineArgsRunner() {
     }
 
